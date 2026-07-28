@@ -2784,3 +2784,38 @@ body {
     color: white;
     cursor: default;
 }
+
+/* ═════════════════════════════════════════════════════════════════════════════
+   📱 GALAXY TAB & TABLET TOUCH OPTIMIZATION
+   ═════════════════════════════════════════════════════════════════════════════ */
+@media (min-width: 600px) and (max-width: 1366px) {
+    .game-container {
+        width: 100vw;
+        max-width: 100%;
+        height: 100vh;
+        max-height: 100%;
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+    #gameCanvas {
+        max-width: 100%;
+        height: auto;
+        touch-action: none;
+    }
+
+    .shop-container {
+        max-width: 95vw;
+        max-height: 92vh;
+        padding: 16px;
+    }
+
+    .shop-items-grid {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 12px;
+    }
+}
+
+* {
+    -webkit-tap-highlight-color: transparent;
+}

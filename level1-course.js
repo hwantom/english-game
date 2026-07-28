@@ -1617,6 +1617,14 @@
         });
     }
 
+    function unlockAudioOnTablet() {
+        if (typeof speechSynthesis !== 'undefined' && speechSynthesis.resume) {
+            speechSynthesis.resume();
+        }
+    }
+    document.addEventListener('touchstart', unlockAudioOnTablet, { passive: true });
+    document.addEventListener('click', unlockAudioOnTablet, { passive: true });
+
     content.addEventListener('click', handleClick);
     $('#l1-back-map').addEventListener('click', returnToMap);
     initDragAndDrop();
