@@ -183,16 +183,28 @@
         lines: course.lines.map(([speaker, text, ko]) => ({ speaker, text, ko }))
     }));
 
-    const dailyVocabulary = [
-        { en: 'beach', ko: '해변' },
-        { en: 'market', ko: '마켓' },
-        { en: 'park', ko: '공원' },
-        { en: 'hospital', ko: '병원' },
-        { en: 'police station', ko: '경찰서' },
-        { en: 'school', ko: '학교' },
-        { en: 'fire station', ko: '소방서' },
-        { en: 'amusement park', ko: '놀이공원' }
-    ];
+    const levelVocabulary = {
+        1: [
+            { en: 'beach', ko: '해변' },
+            { en: 'amusement park', ko: '놀이공원' },
+            { en: 'vacation', ko: '방학' },
+            { en: 'want', ko: '원하다' }
+        ],
+        2: [
+            { en: 'do', ko: '하다' },
+            { en: 'did', ko: '했다' },
+            { en: 'go', ko: '가다' },
+            { en: 'went', ko: '갔다' },
+            { en: 'eat', ko: '먹다' },
+            { en: 'ate', ko: '먹었다' },
+            { en: 'sleep', ko: '자다' },
+            { en: 'slept', ko: '잤다' },
+            { en: 'meet', ko: '만나다' },
+            { en: 'met', ko: '만났다' }
+        ]
+    };
+
+    const dailyVocabulary = levelVocabulary[1];
 
     const state = {
         level: 1,
@@ -678,13 +690,8 @@
     }
 
     function setupWordMatching() {
-        const wordsPerLevel = 4;
-        const groupCount = Math.ceil(dailyVocabulary.length / wordsPerLevel);
-        const groupIndex = (state.level - 1) % groupCount;
-        const startIndex = groupIndex * wordsPerLevel;
-        const entries = dailyVocabulary
-            .slice(startIndex, startIndex + wordsPerLevel)
-            .map((word, index) => ({ ...word, key: startIndex + index }));
+        const vocabList = levelVocabulary[state.level] || dailyVocabulary;
+        const entries = vocabList.map((word, index) => ({ ...word, key: index }));
         state.matchEnglish = shuffled(entries);
         state.matchKorean = shuffled(entries);
         state.matchSelectedEnglish = null;
