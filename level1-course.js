@@ -206,6 +206,10 @@
 
     const dailyVocabulary = levelVocabulary[1];
 
+    function getActiveVocabulary() {
+        return levelVocabulary[state.level] || levelVocabulary[1];
+    }
+
     const state = {
         level: 1,
         course: courses[0],
@@ -690,7 +694,7 @@
     }
 
     function setupWordMatching() {
-        const vocabList = levelVocabulary[state.level] || dailyVocabulary;
+        const vocabList = getActiveVocabulary();
         const entries = vocabList.map((word, index) => ({ ...word, key: index }));
         state.matchEnglish = shuffled(entries);
         state.matchKorean = shuffled(entries);
@@ -1065,7 +1069,9 @@
             const key = Number(matchCard.dataset.matchKey);
             const side = matchCard.dataset.matchSide;
             if (state.matchedWords.has(key)) return;
-            const word = dailyVocabulary[key];
+            const vocabList = getActiveVocabulary();
+            const word = vocabList[key];
+            if (!word) return;
             stopAudio();
             speak(word.en, .75);
 
@@ -1538,7 +1544,9 @@
                     state.matchSelectedEnglish = data.key;
                     state.matchSelectedKorean = koreanKey;
 
-                    const word = dailyVocabulary[data.key];
+                    const vocabList = getActiveVocabulary();
+                    const word = vocabList[data.key];
+                    if (!word) return;
                     stopAudio();
                     speak(word.en, .75);
                     updateMatchBoard();
