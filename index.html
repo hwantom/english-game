@@ -4,35 +4,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kirby: English Adventure</title>
+    <title>Jae's Adventure</title>
     <link rel="stylesheet" href="style.css?v=6">
+    <link rel="stylesheet" href="level1-course.css?v=6">
     <link href="https://fonts.googleapis.com/css2?family=Jua&family=Nunito:wght@400;700;900&display=swap"
         rel="stylesheet">
 </head>
 
 <body>
     <div class="game-container">
+        <!-- Pre-Intro Story Area -->
+        <div class="story-sequence-area hidden" id="jae-story-area">
+            <canvas id="jae-story-canvas" width="800" height="400"></canvas>
+            <div class="story-controls-bottom">
+                <button class="btn btn-start" id="btn-jae-story-next">Next ⏭️</button>
+            </div>
+        </div>
+
+        <!-- 0. Intro Area -->
+        <div class="intro-area hidden" id="intro-area">
+            <div class="intro-content">
+                <div class="intro-character">
+                    <canvas id="intro-crong-canvas" width="200" height="200"></canvas>
+                </div>
+                <div class="intro-dialog-box">
+                    <p id="intro-text"></p>
+                    <div id="intro-input-container" class="hidden">
+                        <input type="text" id="intro-name-input" placeholder="Type your name..." autocomplete="off">
+                        <button class="btn btn-start" id="btn-intro-submit">Submit</button>
+                    </div>
+                    <div class="intro-controls">
+                        <button class="btn btn-start hidden" id="btn-intro-next">Next ⏭️</button>
+                        <button class="btn btn-start hidden" id="btn-intro-start">Start Adventure! 🌟</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- 1. Start Screen -->
         <div class="setup-area" id="setup-area">
             <div class="start-screen-content">
-                <div class="kirby-title-icon"></div>
-                <h1 class="game-title">Kirby<br>English Adventure</h1>
-                <p class="start-hint">단어는 각 스테이지에 들어가기 전에 입력할 수 있어요!</p>
-                <div style="display: flex; gap: 10px; margin-top: 16px; width: 100%;">
-                    <button class="btn btn-start" id="btn-start" style="flex: 1;">🌟 Enter Map!</button>
-                    <button class="btn" id="btn-open-dashboard" style="flex: 1; background: #8B5CF6; color: white;">📊 Dashboard</button>
+                <!-- Home Screen Crong Canvas -->
+                <div class="home-crong-wrap">
+                    <canvas id="home-crong-canvas" width="180" height="180"></canvas>
                 </div>
+                <h1 class="game-title">Jae's<br><span class="game-title-sub">English Adventure</span></h1>
+                <p class="start-hint">모든 레벨에서 4문장 영어 대화를 듣고 직접 말해 보세요!</p>
+                <div style="display: flex; gap: 8px; margin-top: 14px; width: 100%;">
+                    <button class="btn btn-start" id="btn-start" style="flex: 2;">🌟 Enter Map!</button>
+                    <button class="btn" id="btn-open-shop" style="flex: 2; background: linear-gradient(135deg, #EC4899, #8B5CF6); color: white; border: none; font-weight: bold; box-shadow: 0 4px 0 #7C3AED;">🛍️ 꾸미기 샵</button>
+                    <button class="btn" id="btn-open-dashboard" style="flex: 1; background: #4B5563; color: white;">📊 기록</button>
+                </div>
+                <button class="btn" id="btn-home-evolve"
+                    style="width: 100%; margin-top: 10px; background: linear-gradient(90deg, #F59E0B, #EF4444); color: white; border: none; font-weight: bold; box-shadow: 0 4px 0 #B45309;">✨
+                    Evolve Character ✨</button>
             </div>
         </div>
 
         <!-- 2. Map Area -->
         <div class="map-area hidden" id="map-area">
-            <h2 class="map-title">Which stage will you choose?</h2>
+            <div class="map-top-bar">
+                <div class="map-diamond-badge" id="map-diamond-btn" title="다이아 샵 열기">
+                    <span class="diamond-icon">💎</span>
+                    <span id="map-diamond-count">50</span>
+                </div>
+                <button class="map-btn-shop" id="btn-map-open-shop">🛍️ 캐릭터 꾸미기</button>
+            </div>
             <div class="map-background">
-                <button class="stage-btn" id="stage-btn-1" style="left: 17%; top: 60%;">1</button>
-                <button class="stage-btn" id="stage-btn-2" style="left: 74%; top: 59%;">2</button>
-                <button class="stage-btn" id="stage-btn-3" style="left: 81%; top: 18%;">3</button>
-                <div id="kirby-map-icon" class="kirby-map-icon" style="left: 17%; top: 60%;"></div>
+                <!-- 19 Stage Circles aligned to the map -->
+                <button class="stage-hitbox" id="stage-btn-1" style="left: 7.6%; top: 44.5%;"></button>
+                <button class="stage-hitbox" id="stage-btn-2" style="left: 13.0%; top: 52.2%;"></button>
+                <button class="stage-hitbox" id="stage-btn-3" style="left: 19.2%; top: 52.3%;"></button>
+                <button class="stage-hitbox" id="stage-btn-4" style="left: 22.3%; top: 43.2%;"></button>
+                <button class="stage-hitbox" id="stage-btn-5" style="left: 28.1%; top: 52.7%;"></button>
+                <button class="stage-hitbox" id="stage-btn-6" style="left: 34.1%; top: 50.7%;"></button>
+                <button class="stage-hitbox" id="stage-btn-7" style="left: 36.1%; top: 42.1%;"></button>
+                <button class="stage-hitbox" id="stage-btn-8" style="left: 40.6%; top: 53.7%;"></button>
+                <button class="stage-hitbox" id="stage-btn-9" style="left: 47.1%; top: 51.0%;"></button>
+                <button class="stage-hitbox" id="stage-btn-10" style="left: 50.5%; top: 44.7%;"></button>
+                <button class="stage-hitbox" id="stage-btn-11" style="left: 57.5%; top: 46.5%;"></button>
+                <button class="stage-hitbox" id="stage-btn-12" style="left: 60.3%; top: 56.6%;"></button>
+                <button class="stage-hitbox" id="stage-btn-13" style="left: 67.0%; top: 55.6%;"></button>
+                <button class="stage-hitbox" id="stage-btn-14" style="left: 70.2%; top: 45.0%;"></button>
+                <button class="stage-hitbox" id="stage-btn-15" style="left: 74.7%; top: 57.6%;"></button>
+                <button class="stage-hitbox" id="stage-btn-16" style="left: 81.5%; top: 54.7%;"></button>
+                <button class="stage-hitbox" id="stage-btn-17" style="left: 83.1%; top: 47.5%;"></button>
+                <button class="stage-hitbox" id="stage-btn-18" style="left: 92.7%; top: 56.8%;"></button>
+                <button class="stage-hitbox" id="stage-btn-19" style="left: 92.2%; top: 45.4%;"></button>
+                <div id="kirby-map-icon" class="kirby-map-icon">
+                    <canvas id="map-icon-canvas" width="60" height="60"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- All levels: six-step listening, ordering, vocabulary, interpretation, and speaking course -->
+        <section class="l1-shell hidden" id="level1-course" aria-label="English dialogue course">
+            <header class="l1-topbar">
+                <button class="l1-icon-btn" id="l1-back-map" type="button" aria-label="Back to map">×</button>
+                <div class="l1-top-progress">
+                    <div class="l1-progress-copy">
+                        <strong id="l1-level-label">LEVEL 1</strong>
+                        <span id="l1-top-step">1 / 6</span>
+                    </div>
+                    <div class="l1-top-track" aria-label="Lesson progress">
+                        <span id="l1-top-fill"></span>
+                    </div>
+                </div>
+                <div class="l1-rewards" aria-label="Learning rewards">
+                    <span title="Hearts">❤️ <b id="l1-hearts">5</b></span>
+                </div>
+            </header>
+
+            <div class="l1-layout">
+                <main class="l1-content" id="l1-content" tabindex="-1"></main>
+            </div>
+            <div class="l1-confetti" id="l1-confetti" aria-hidden="true"></div>
+        </section>
+        <!-- 2.5 Story Area (Level 3 Intro) -->
+        <div class="story-area hidden" id="story-area">
+            <div class="story-content">
+                <img src="story1.png" id="story-img" alt="Story Slide">
+                <div class="story-controls">
+                    <button class="btn btn-start" id="btn-story-next">Next ⏭️</button>
+                    <button class="btn" id="btn-story-skip" style="background: #9CA3AF; color: white;">Skip</button>
+                </div>
             </div>
         </div>
 
@@ -58,13 +153,26 @@
 
                 <div class="battlefield">
                     <div class="character-container" id="player">
-                        <div class="krong-container hidden" id="krong-container">
-                            <img src="crong.png" alt="Crong" id="krong-img">
-                        </div>
                         <div class="kirby" id="kirby-sprite">
-                            <img src="kirby.png" alt="Kirby" id="kirby-img">
+                            <!-- EXP Bar -->
+                            <div class="crong-exp-bar-wrapper" id="crong-exp-wrapper">
+                                <div class="crong-exp-label">EXP <span id="exp-count">30</span>/170</div>
+                                <div class="crong-exp-track">
+                                    <div class="crong-exp-fill" id="crong-exp-fill"></div>
+                                </div>
+                            </div>
+                            <canvas id="crong-canvas" width="200" height="200"></canvas>
                         </div>
                     </div>
+
+                    <!-- 스프라이트 시트 숨김 -->
+                    <img id="crong-spritesheet" src="jae/jae_spritesheet.png" style="display: none;" alt="Spritesheet">
+                    <img id="crong-skill-spritesheet" src="spritesheet_skill.png" style="display: none;"
+                        alt="Skill Spritesheet">
+                    <img id="crong-second-spritesheet" src="jae/jae_spritesheet.png" style="display: none;"
+                        alt="Second Form Spritesheet">
+                    <img id="crong-third-spritesheet" src="jae/jae_spritesheet.png" style="display: none;"
+                        alt="Third Form Spritesheet">
 
                     <div class="enemy-container" id="enemy">
                         <div class="boss-hp-container hidden" id="boss-hp-container">
@@ -89,6 +197,10 @@
                     <div class="progress-text">Question <span id="current-q-num">1</span> / 10</div>
                     <div class="score-text">Score: <span id="score">0</span> / 10</div>
                 </div>
+
+                <div id="phase3-timer" class="hidden"
+                    style="font-size: 1.5rem; color: #ef4444; font-weight: 900; text-align: center; margin-top: 5px;">
+                    Time Left: <span id="timer-count">10</span>s</div>
 
                 <div class="combo-text hidden" id="combo-text">2 콤보!</div>
 
@@ -119,14 +231,12 @@
                 <div class="dash-section">
                     <h3>🏆 Overall Progress</h3>
                     <p>Total Correct Answers: <strong id="dash-total-correct">0</strong></p>
-                    <p>Current Stage Unlocked: <strong id="dash-unlocked-stage">1 / 3</strong></p>
+                    <p>Current Stage Unlocked: <strong id="dash-unlocked-stage">1 / 10</strong></p>
                 </div>
                 <div class="dash-section">
                     <h3>📚 Today's Vocabulary</h3>
-                    <div class="word-lists">
-                        <div class="lvl-list"><span class="lvl-badge b-lvl1">Level 1</span> <span id="dash-lvl1">-</span></div>
-                        <div class="lvl-list"><span class="lvl-badge b-lvl2">Level 2</span> <span id="dash-lvl2">-</span></div>
-                        <div class="lvl-list"><span class="lvl-badge b-lvl3">Level 3</span> <span id="dash-lvl3">-</span></div>
+                    <div class="word-lists" id="dashboard-word-lists">
+                        <!-- Dynamic content here -->
                     </div>
                 </div>
                 <div class="dash-section warning">
@@ -135,9 +245,11 @@
                 </div>
             </div>
             <div style="display: flex; gap: 10px; margin-top: 20px;">
-                <button class="btn btn-close-dash" id="btn-close-dashboard" style="flex: 1; margin-top: 0;">Close Dashboard</button>
+                <button class="btn btn-close-dash" id="btn-close-dashboard" style="flex: 1; margin-top: 0;">Close
+                    Dashboard</button>
                 <button class="btn btn-download-dash" id="btn-download-dashboard"
-                    style="flex: 1; background: #10B981; color: white; display: flex; justify-content: center; align-items: center; gap: 8px;">💾 Download PDF</button>
+                    style="flex: 1; background: #10B981; color: white; display: flex; justify-content: center; align-items: center; gap: 8px;">💾
+                    Download PDF</button>
             </div>
         </div>
     </div>
@@ -159,18 +271,70 @@
                 <h2 id="stage-input-title">오늘의 단어를 입력해주세요!</h2>
             </div>
             <div class="input-group">
-                <label id="stage-input-label">Level 1 Words (쉼표로 구분, 최소 10개 권장)</label>
+                <label id="stage-input-label">Level Words (쉼표로 구분, 최소 10개 권장)</label>
                 <textarea id="stage-word-input" placeholder="ex) Apple, Banana, Orange ..." rows="4"></textarea>
             </div>
             <p class="setup-info" id="stage-input-hint">※ 단어를 입력하지 않으면 기본 단어로 시작합니다.</p>
             <div style="display: flex; gap: 10px; margin-top: 8px;">
-                <button class="btn btn-fail" id="btn-stage-input-cancel" style="flex: 1; font-size: 1.1rem; padding: 12px;">← 돌아가기</button>
-                <button class="btn btn-start" id="btn-stage-input-confirm" style="flex: 2; font-size: 1.2rem; padding: 12px;">⚔️ 출발!</button>
+                <button class="btn btn-fail" id="btn-stage-input-cancel"
+                    style="flex: 1; font-size: 1.1rem; padding: 12px;">← 돌아가기</button>
+                <button class="btn btn-start" id="btn-stage-input-confirm"
+                    style="flex: 2; font-size: 1.2rem; padding: 12px;">⚔️ 출발!</button>
             </div>
         </div>
     </div>
 
-    <script src="script.js?v=5"></script>
+    <!-- 5. Character Customization & Diamond Shop Modal -->
+    <div class="shop-modal-overlay hidden" id="shop-modal">
+        <div class="shop-container">
+            <header class="shop-header">
+                <div class="shop-title-wrap">
+                    <h2>🛍️ 캐릭터 드레스룸 & 다이아 샵</h2>
+                    <p>다이아몬드로 옷, 장신구, 캐릭터 스킨을 구매하고 나만의 특색있는 캐릭터로 꾸며보세요!</p>
+                </div>
+                <div class="shop-diamond-box" id="shop-diamond-click-box" title="클릭시 무료 10 다이아 획득!">
+                    <span class="shop-gem-icon">💎</span>
+                    <span class="shop-gem-amount" id="shop-diamond-count">50</span>
+                    <button class="btn-bonus-gem" id="btn-get-bonus-gem">+10 💎</button>
+                </div>
+                <button class="shop-close-btn" id="btn-close-shop" aria-label="Close Shop">×</button>
+            </header>
+
+            <div class="shop-body">
+                <!-- Left: Character Real-Time Preview -->
+                <div class="shop-preview-panel">
+                    <div class="preview-canvas-wrap">
+                        <canvas id="shop-preview-canvas" width="220" height="220"></canvas>
+                        <div class="preview-sparkle-layer">✨</div>
+                    </div>
+                    <div class="equipped-summary">
+                        <div class="equipped-tag"><span class="tag-label">👕 의상:</span> <span id="eq-clothes-name">기본 의상</span></div>
+                        <div class="equipped-tag"><span class="tag-label">🐾 펫:</span> <span id="eq-pet-name">없음</span></div>
+                    </div>
+                    <div class="preview-actions">
+                        <button class="btn btn-primary-shop" id="btn-shop-equip-save">✨ 착용 완료하기</button>
+                    </div>
+                </div>
+
+                <!-- Right: Tabs & Items Catalog -->
+                <div class="shop-catalog-panel">
+                    <nav class="shop-tabs">
+                        <button class="shop-tab active" data-tab="clothes">👕 의상 (Outfits)</button>
+                        <button class="shop-tab" data-tab="pets">🐾 펫 (Pets)</button>
+                    </nav>
+
+                    <div class="shop-items-grid" id="shop-items-grid">
+                        <!-- Dynamic item cards will be generated by JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="voice-recorder.js?v=1"></script>
+    <script src="level1-course.js?v=13"></script>
+    <script src="script.js?v=9"></script>
+
 </body>
 
 </html>

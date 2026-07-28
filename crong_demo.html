@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crong Animation Demo</title>
+    <link rel="stylesheet" href="crong_demo.css">
+</head>
+<body>
+    <div class="demo-container">
+        <h2>Crong 2D Animation Demo</h2>
+        <div class="canvas-wrapper">
+            <canvas id="crong-canvas" width="200" height="200"></canvas>
+        </div>
+        <div class="controls">
+            <button id="btn-correct" class="btn correct">Pass! (Correct)</button>
+            <button id="btn-incorrect" class="btn incorrect">Oops! (Incorrect)</button>
+            <button id="btn-evolve" class="btn" style="background-color: #8b5cf6; color: white; box-shadow: 0 4px 0 #7c3aed;">Evolve!</button>
+        </div>
+    </div>
+    
+    <!-- 스프라이트 시트 이미지 렌더링에 사용 (보이지 않게 숨김) -->
+    <img id="crong-spritesheet" src="kroong_spritesheet-removebg-preview.png" style="display: none;" alt="Spritesheet">
+    <img id="crong-second-img" src="crong_second_pixel_spritesheet.png" style="display: none;" alt="Crong Second Spritesheet">
+
+    <script src="crong_demo.js"></script>
+</body>
+</html>

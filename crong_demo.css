@@ -1,0 +1,73 @@
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f0f4f8;
+    font-family: 'Nunito', sans-serif;
+}
+
+.demo-container {
+    background: white;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+h2 {
+    color: #333;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.canvas-wrapper {
+    background-image: linear-gradient(180deg, #8FD3F4 0%, #84FAB0 100%);
+    border: 4px solid #333;
+    border-radius: 12px;
+    display: inline-block;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+}
+
+.controls {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.btn {
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.1s, box-shadow 0.1s;
+    color: white;
+}
+
+.btn:active {
+    transform: translateY(2px);
+}
+
+.btn.correct {
+    background-color: #3b82f6;
+    box-shadow: 0 4px 0 #2563eb;
+}
+
+.btn.correct:active {
+    box-shadow: 0 2px 0 #2563eb;
+}
+
+.btn.incorrect {
+    background-color: #ef4444;
+    box-shadow: 0 4px 0 #dc2626;
+}
+
+.btn.incorrect:active {
+    box-shadow: 0 2px 0 #dc2626;
+}
