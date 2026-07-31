@@ -25,12 +25,12 @@
             ]
         },
         {
-            icon: '🍪', title: '간식 나누기', subtitle: '친구와 간식을 나눠요',
+            icon: '🎨', title: '위인과 작품', subtitle: '누가 무엇을 만들었는지 이야기해요',
             lines: [
-                ['A', 'Do you want a cookie?', '쿠키 먹을래?'],
-                ['B', 'Yes, please.', '응, 부탁해.'],
-                ['A', 'Here you are.', '여기 있어.'],
-                ['B', 'Thank you!', '고마워!']
+                ['A', 'Who wrote this book?', '누가 이 책을 썼니?'],
+                ['B', 'Shakespeare did!', '셰익스피어가 썼어!'],
+                ['A', 'Who built this tower?', '누가 이 탑을 지었니?'],
+                ['B', 'Eiffel did!', '에펠이 지었어!']
             ]
         },
         {
@@ -201,13 +201,27 @@
             { en: 'slept', ko: '잤다' },
             { en: 'meet', ko: '만나다' },
             { en: 'met', ko: '만났다' }
+        3: [
+            { en: 'write', ko: '쓰다', part: 1 },
+            { en: 'wrote', ko: '썼다', part: 1 },
+            { en: 'build', ko: '짓다', part: 1 },
+            { en: 'built', ko: '지었다', part: 1 },
+            { en: 'draw', ko: '그리다', part: 1 },
+            { en: 'drew', ko: '그렸다', part: 2 },
+            { en: 'invent', ko: '발명하다', part: 2 },
+            { en: 'invented', ko: '발명했다', part: 2 },
+            { en: 'make', ko: '만들다', part: 2 },
+            { en: 'made', ko: '만들었다', part: 2 }
         ]
     };
 
     const dailyVocabulary = levelVocabulary[1];
 
-    function getActiveVocabulary() {
-        return levelVocabulary[state.level] || levelVocabulary[1];
+    function getActiveVocabulary(part = 1) {
+        const fullList = levelVocabulary[state.level] || levelVocabulary[1];
+        const hasParts = fullList.some(item => item.part);
+        if (!hasParts) return fullList;
+        return fullList.filter(item => item.part === (state.matchCurrentPart || part));
     }
 
     const state = {
@@ -483,7 +497,9 @@
         const clean = text.trim().toLowerCase().replace(/[?!.,]/g, '');
         const PRESET_MAP = {
             'where did you go': 'jae/level/level2/Where+did+you+go_.mp3',
-            'what did you do there': 'jae/level/level2/What+did+you+do+there_.mp3'
+            'what did you do there': 'jae/level/level2/What+did+you+do+there_.mp3',
+            'who wrote this book': 'jae/level/level3/Who+wrote+this+book_.mp3',
+            'who built this tower': 'jae/level/level3/Who+built+this+tower_.mp3'
         };
         return PRESET_MAP[clean] || null;
     }
@@ -693,8 +709,13 @@
             </button>`).join('');
     }
 
-    function setupWordMatching() {
-        const vocabList = getActiveVocabulary();
+    function setupWordMatching(part = 1) {
+        const fullList = levelVocabulary[state.level] || levelVocabulary[1];
+        const hasParts = fullList.some(item => item.part);
+        state.matchCurrentPart = part;
+        state.matchTotalParts = hasParts ? Math.max(...fullList.map(i => i.part || 1)) : 1;
+
+        const vocabList = getActiveVocabulary(part);
         const entries = vocabList.map((word, index) => ({ ...word, key: index }));
         state.matchEnglish = shuffled(entries);
         state.matchKorean = shuffled(entries);
@@ -707,10 +728,16 @@
 
     function renderWordMatching(reset = true) {
         stopAudio();
-        if (reset) setupWordMatching();
+        if (reset) setupWordMatching(1);
+        const titleText = state.matchTotalParts > 1 
+            ? `단어 짝 맞추기 (Part ${state.matchCurrentPart}/${state.matchTotalParts}) 🧩` 
+            : '단어 짝 맞추기 🧩';
+        const subTitleText = state.matchTotalParts > 1
+            ? `[Part ${state.matchCurrentPart}] 왼쪽 영어 카드를 오른쪽 한국어 카드로 직접 드래그하여 연결하세요!`
+            : '왼쪽 영어 카드를 오른쪽 한국어 카드로 직접 드래그하여 연결하세요!';
         content.innerHTML = `
             <div class="l1-page">
-                ${lessonHeader(3, '단어 짝 맞추기 🧩', '왼쪽 영어 카드를 오른쪽 한국어 카드로 직접 드래그하여 연결하세요!')}
+                ${lessonHeader(3, titleText, subTitleText)}
                 <div class="l1-card">
                     <div class="l1-match-board">
                         <div class="l1-match-column">
@@ -747,6 +774,25 @@
             );
             card.disabled = state.matchedWords.has(key);
         });
+    }
+
+    function handleMatchComplete() {
+        if (state.matchCurrentPart < state.matchTotalParts) {
+            const nextPart = state.matchCurrentPart + 1;
+            const feedback = $('#l1-match-feedback');
+            if (feedback) {
+                feedback.className = 'l1-feedback good';
+                feedback.textContent = `🎉 Part ${state.matchCurrentPart} 완료! 이어서 Part ${nextPart} 단어를 맞춰보세요!`;
+            }
+            showJaeMotion('Part 완료!');
+            reward(5, 0);
+            setTimeout(() => {
+                setupWordMatching(nextPart);
+                renderWordMatching(false);
+            }, 1200);
+        } else {
+            markStageComplete(3, 20, 3, () => renderSentenceBuilder(true));
+        }
     }
 
     function setupSentenceBuilder(index = 0) {
@@ -1090,7 +1136,7 @@
                     updateMatchBoard();
 
                     if (state.matchedWords.size === state.matchTargetCount) {
-                        markStageComplete(3, 20, 3, () => renderSentenceBuilder(true));
+                        handleMatchComplete();
                     } else {
                         showJaeMotion('단어 짝 정답!');
                         setTimeout(() => {
@@ -1562,7 +1608,7 @@
                         updateMatchBoard();
 
                         if (state.matchedWords.size === state.matchTargetCount) {
-                            markStageComplete(3, 20, 3, () => renderSentenceBuilder(true));
+                            handleMatchComplete();
                         } else {
                             showJaeMotion('단어 짝 정답!');
                             setTimeout(() => {
