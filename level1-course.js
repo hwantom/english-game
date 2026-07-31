@@ -989,6 +989,46 @@
         setTimeout(next, 750);
     }
 
+    function renderCourseSelectionMap() {
+        stopAudio();
+        document.getElementById('map-area')?.classList.add('hidden');
+        document.getElementById('stage-input-modal')?.classList.add('hidden');
+        document.getElementById('battle-view')?.classList.add('hidden');
+        shell.classList.remove('hidden');
+
+        content.innerHTML = `
+            <div class="l1-page">
+                <div class="l1-hero">
+                    <div class="l1-hero-copy">
+                        <p class="l1-eyebrow">DUOLINGO STYLE ENGLISH COURSE</p>
+                        <h1>재와 함께하는 재미있는 영어 대화 🌟</h1>
+                        <p>원하는 레벨(Level 1 ~ ${courses.length})을 선택하여 듣기, 순서 맞추기, 단어 짝 맞추기, 문장 완성, 통역 및 말하기 6단계를 도전하세요!</p>
+                    </div>
+                    <div class="l1-hero-art">🎓</div>
+                </div>
+
+                <div class="l1-section-head">
+                    <div>
+                        <h2>학습 레벨 선택 (Course Path)</h2>
+                        <p>단계별 대화 주제를 선택해 학습하세요.</p>
+                    </div>
+                    <button class="l1-btn blue" type="button" data-action="back-map">🗺️ 월드 맵으로</button>
+                </div>
+
+                <div class="l1-topic-grid">
+                    ${courses.map(course => `
+                        <div class="l1-topic ${state.level === course.level ? 'selected' : ''}" data-select-level="${course.level}">
+                            <span>${course.icon}</span>
+                            <strong>LEVEL ${course.level}</strong>
+                            <p style="margin: 4px 0 0; font-size: 0.78rem; color: #475569;">${escapeHtml(course.title)}</p>
+                            <small style="display: block; margin-top: 2px; font-size: 0.7rem; color: #94a3b8;">${escapeHtml(course.subtitle)}</small>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>`;
+        content.scrollTop = 0;
+    }
+
     function returnToMap() {
         stopAudio();
         shell.classList.add('hidden');
@@ -1027,6 +1067,12 @@
     }
 
     function handleClick(event) {
+        const selectLevelBtn = event.target.closest('[data-select-level]');
+        if (selectLevelBtn) {
+            const lvl = Number(selectLevelBtn.dataset.selectLevel);
+            startCourse(lvl);
+            return;
+        }
         const playTtsBtn = event.target.closest('[data-play-tts]');
         if (playTtsBtn) {
             stopAudio();
@@ -1691,6 +1737,7 @@
     initDragAndDrop();
 
     window.openLevelOneCourse = startCourse;
+    window.openCourseSelectionMap = renderCourseSelectionMap;
     refillHeartsForThisUpdate();
     updateHeader();
 })();

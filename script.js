@@ -2397,15 +2397,23 @@ let currentShopTab = 'clothes';
 let shopPreviewEquipped = getEquippedItems();
 
 function initShopSystem() {
-    const shopModal = document.getElementById('shop-modal');
     const btnOpenShop = document.getElementById('btn-open-shop');
     const btnMapOpenShop = document.getElementById('btn-map-open-shop');
+    const btnOpenDuolingoMap = document.getElementById('btn-open-duolingo-map');
     const mapDiamondBtn = document.getElementById('map-diamond-btn');
     const btnCloseShop = document.getElementById('btn-close-shop');
     const btnGetBonusGem = document.getElementById('btn-get-bonus-gem');
     const shopDiamondBox = document.getElementById('shop-diamond-click-box');
     const btnEquipSave = document.getElementById('btn-shop-equip-save');
     const tabs = document.querySelectorAll('.shop-tab');
+
+    if (btnOpenDuolingoMap) {
+        btnOpenDuolingoMap.addEventListener('click', () => {
+            if (typeof window.openCourseSelectionMap === 'function') {
+                window.openCourseSelectionMap();
+            }
+        });
+    }
 
     setUserDiamonds(getUserDiamonds());
 
