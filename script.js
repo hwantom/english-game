@@ -1,4 +1,4 @@
-// --- CANVAS ANIMATION DATA ---
+﻿// --- CANVAS ANIMATION DATA ---
 const crongCanvas = document.getElementById('crong-canvas');
 const crongCtx = crongCanvas ? crongCanvas.getContext('2d') : null;
 const spritesheet = document.getElementById('crong-spritesheet');
@@ -2353,24 +2353,23 @@ window.initL1CompleteCanvas = function() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         const bounceY = Math.abs(Math.sin(Date.now() / 200)) * 12;
+
+        const evoLevel = typeof crongEvolutionLevel !== 'undefined' ? crongEvolutionLevel : (crongEvolved ? 2 : 1);
+        let cData = evoLevel === 3 ? spriteDataThird : (evoLevel === 2 ? spriteDataSecond : spriteData);
+        let sSheet = evoLevel === 3 ? document.getElementById('crong-third-spritesheet') :
+                     (evoLevel === 2 ? document.getElementById('crong-second-spritesheet') : sheet);
+
         const equipped = getEquippedItems();
         const hasCustomClothes = equipped.clothes && equipped.clothes !== 'clothes_default';
 
-        if (!hasCustomClothes) {
-            const evoLevel = typeof crongEvolutionLevel !== 'undefined' ? crongEvolutionLevel : (crongEvolved ? 2 : 1);
-            let cData = evoLevel === 3 ? spriteDataThird : (evoLevel === 2 ? spriteDataSecond : spriteData);
-            let sSheet = evoLevel === 3 ? document.getElementById('crong-third-spritesheet') :
-                         (evoLevel === 2 ? document.getElementById('crong-second-spritesheet') : sheet);
+        if (!hasCustomClothes && cData && cData.idle && cData.idle.length > 0 && sSheet && sSheet.complete) {
+            const frames = cData.idle;
+            const f = frames[frameIdx % frames.length];
+            const scale = 110 / f.w;
+            const drawX = (canvas.width - f.w * scale) / 2;
+            const drawY = (canvas.height - f.h * scale) / 2 - bounceY + 8;
 
-            if (cData && cData.idle && cData.idle.length > 0 && sSheet && sSheet.complete) {
-                const frames = cData.idle;
-                const f = frames[frameIdx % frames.length];
-                const scale = 110 / f.w;
-                const drawX = (canvas.width - f.w * scale) / 2;
-                const drawY = (canvas.height - f.h * scale) / 2 - bounceY + 8;
-
-                ctx.drawImage(sSheet, f.x, f.y, f.w, f.h, drawX, drawY, f.w * scale, f.h * scale);
-            }
+            ctx.drawImage(sSheet, f.x, f.y, f.w, f.h, drawX, drawY, f.w * scale, f.h * scale);
         }
 
         const centerX = canvas.width / 2;
